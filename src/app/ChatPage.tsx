@@ -138,62 +138,137 @@ const ChatPage: React.FC = () => {
     }
   };
 
-  return (
-    <div className="chat-page" id="chatPage" style={{ display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-      <div className="particles">
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-        <div className="particle"></div>
-      </div>
-      <div className="chat-container">
-        <div className="chat-header">
-          <div className="avatar">
-            <i className="fas fa-robot"></i>
-          </div>
-          <div className="info">
-            <h3>AI Assistant</h3>
-            <p>Your personal AI companion</p>
-          </div>
-          <div className="status-indicator"></div>
-        </div>
-        <div className="chat-history" id="chatHistory" ref={chatHistoryRef}>
-          {renderHistory()}
-        </div>
-        {showProgress && (
-          <div className="progress-indicator" id="progressIndicator">
-            <div className="progress-content">
-              <div className="progress-icon">
-                <i className={`fas ${progressStates[progressIdx ?? 0].icon}`}></i>
-              </div>
-              <div className="progress-text" id="progressText">{progressText}</div>
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          width: "100vw",
+          display: "flex",
+          flexDirection: "column",
+          background: "#fff",
+          overflowX: "hidden"
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            width: "100%",
+            maxWidth: 700,
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            alignItems: "stretch",
+            padding: "0 36px",
+            boxSizing: "border-box",
+            overflowX: "hidden"
+          }}
+        >
+          <div
+            style={{
+              width: "100%",
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+              alignItems: "flex-start",
+              overflowY: "auto",
+              wordBreak: "break-word",
+              marginBottom: 16
+            }}
+            ref={chatHistoryRef}
+          >
+            {/* Ensure message content wraps and preserves line breaks */}
+            <div style={{ width: '100%' }}>
+              {history.length === 0 && (
+                <div className="welcome-message" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                  <i className="fas fa-comments"></i>
+                  <div>Welcome! I&apos;m your AI assistant.</div>
+                  <div style={{ fontSize: 13, marginTop: 8, opacity: 0.8 }}>
+                    Ask me anything - I&apos;m here to help!
+                  </div>
+                </div>
+              )}
+              {history.map((item, idx) => (
+                <React.Fragment key={idx}>
+                  {item.user && (
+                    <div className="chat-message user-message" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxWidth: '100%', overflowWrap: 'break-word' }}>
+                      <div className="message-avatar user-avatar-msg">
+                        <i className="fas fa-user"></i>
+                      </div>
+                      <div className="message-content" style={{ maxWidth: '100%', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                        {item.user}
+                        <div className="message-time">{item.time}</div>
+                      </div>
+                    </div>
+                  )}
+                  {item.ai && (
+                    <div className="chat-message ai-message" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxWidth: '100%', overflowWrap: 'break-word' }}>
+                      <div className="message-avatar ai-avatar">
+                        <i className="fas fa-robot"></i>
+                      </div>
+                      <div className="message-content" style={{ maxWidth: '100%', overflowWrap: 'break-word', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                        <span dangerouslySetInnerHTML={{ __html: formatMessage(item.ai) }} />
+                        <div className="message-time">{item.time}</div>
+                      </div>
+                    </div>
+                  )}
+                </React.Fragment>
+              ))}
             </div>
-            <div className="progress-bar">
-              <div className="progress-fill"></div>
-            </div>
           </div>
-        )}
-        <form className="chat-input" id="chatForm" onSubmit={handleSubmit}>
-          <div className="input-container">
+          <div style={{ width: "100%", height: 1, background: "#eee", marginBottom: 16 }} />
+          <form
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              background: "#f5f5f5",
+              borderRadius: 24,
+              boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+              padding: "8px 16px",
+              marginBottom: 8
+            }}
+            onSubmit={handleSubmit}
+          >
             <input
               type="text"
-              id="message"
-              name="message"
-              placeholder="Type your message..."
+              placeholder="Ask anything"
               autoComplete="off"
               required
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              style={{
+                flex: 1,
+                border: "none",
+                outline: "none",
+                background: "transparent",
+                fontSize: 18,
+                padding: "8px 0"
+              }}
             />
-            <button type="submit" className="send-button">
-              <i className="fas fa-paper-plane"></i>
+            <button
+              type="submit"
+              style={{
+                background: "#000",
+                color: "#fff",
+                border: "none",
+                borderRadius: "50%",
+                width: 40,
+                height: 40,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: 8,
+                cursor: "pointer"
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M3.4 20.6a1 1 0 0 1-.3-1.1l3.2-9.6a1 1 0 0 1 1.3-.6l6.2 2.6a.5.5 0 0 0 .4-.9l-6.2-2.6a1 1 0 0 1-.6-1.3l3.2-9.6a1 1 0 0 1 1.1-.3c.3.1.5.4.6.7l9.6 19.2a1 1 0 0 1-1.3 1.3l-19.2-9.6a1 1 0 0 1-.7-.6z"/></svg>
             </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default ChatPage;
