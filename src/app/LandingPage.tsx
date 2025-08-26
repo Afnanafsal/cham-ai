@@ -3,14 +3,8 @@ import React from 'react';
 const LandingPage: React.FC<{ onStartChat: () => void }> = ({ onStartChat }) => (
   <div className="landing-page" id="landingPage">
     <nav className="navbar">
-      <div className="logo">AI Assistant</div>
-      <ul className="nav-menu">
-        <li><a href="#" className="active">Home</a></li>
-        <li><a href="#">Features</a></li>
-        <li><a href="#">Solutions</a></li>
-        <li><a href="#">Enterprise</a></li>
-        <li><a href="#">Pricing</a></li>
-      </ul>
+      <div className="logo">Cham-ai</div>
+      
       <div className="nav-buttons">
         <a href="#" className="btn-login">Login</a>
         <a href="#" className="btn-primary">Try For Free Now</a>
@@ -40,7 +34,6 @@ const LandingPage: React.FC<{ onStartChat: () => void }> = ({ onStartChat }) => 
             <i className="fas fa-user"></i>
           </div>
         </div>
-        Supporting over <strong>3,000,000</strong> users worldwide
       </div>
     </section>
   </div>

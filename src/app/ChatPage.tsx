@@ -1,5 +1,40 @@
 import React, { useRef, useState } from 'react';
-import Navbar from '../components/Navbar';
+// Navbar component directly in ChatPage
+
+const Navbar: React.FC = () => {
+  return (
+    <nav
+      style={{
+        width: "100%",
+        height: 56,
+        background: "#fff",
+        borderBottom: "1px solid #eee",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 32px",
+        boxSizing: "border-box",
+        fontFamily: "inherit",
+        position: "fixed",
+        top: 0,
+        zIndex: 100
+      }}
+    >
+      <div style={{ fontWeight: 700, fontSize: 20, color: "#222" }}>Cham-ai</div>
+      <div style={{ fontSize: 15, color: "#555" }}>
+        Developed by{' '}
+        <a
+          href="https://linkedin.com/in/afnanafsal"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "#0077b5", textDecoration: "none", fontWeight: 500 }}
+        >
+          afnanafsal
+        </a>
+      </div>
+    </nav>
+  );
+};
 interface Message {
   user?: string;
   ai?: string;
@@ -64,7 +99,7 @@ const ChatPage: React.FC = () => {
 
   return (
     <>
-      <Navbar />
+  <Navbar />
       <div
         style={{
           minHeight: "100vh",
@@ -72,7 +107,9 @@ const ChatPage: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           background: "#fff",
-          overflowX: "hidden"
+          overflowX: "hidden",
+          alignItems: "center",
+          justifyContent: "center"
         }}
       >
         <div
@@ -80,14 +117,15 @@ const ChatPage: React.FC = () => {
             flex: 1,
             width: "100%",
             maxWidth: 700,
-            margin: "0 auto",
+            margin: "72px auto 0 auto",
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-end",
-            alignItems: "stretch",
+            alignItems: "center",
             padding: "0 16px 32px 16px",
             boxSizing: "border-box",
-            overflowX: "hidden"
+            overflowX: "hidden",
+            minHeight: "80vh"
           }}
         >
           <div
@@ -101,24 +139,33 @@ const ChatPage: React.FC = () => {
               overflowY: "auto",
               overflowX: "hidden",
               wordBreak: "break-word",
-              marginBottom: 16
+              marginBottom: 16,
+              paddingBottom: 88 // ensures messages stay above the fixed form
             }}
             ref={chatHistoryRef}
           >
             <div style={{ width: '100%' }}>
               {history.length === 0 && (
-                <div className="welcome-message" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-                  <i className="fas fa-comments"></i>
-                  <div>Welcome! I&apos;m your AI assistant.</div>
-                  <div style={{ fontSize: 18, marginTop: 8, opacity: 0.8 }}>
-                    Ask me anything - I&apos;m here to help!
+                <div style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minHeight: "60vh",
+                  width: "100%"
+                }}>
+                  <div style={{ fontSize: "2rem", fontWeight: 500, color: "#222", marginBottom: 24, textAlign: "center" }}>
+                    Whats going on?
+                  </div>
+                  <div style={{ fontSize: 16, color: "#555", marginBottom: 8, textAlign: "center" }}>
+                    Ask anything
                   </div>
                 </div>
               )}
               {history.map((item, idx) => (
                 <React.Fragment key={idx}>
                   {item.user && (
-                    <div className="chat-message user-message" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxWidth: '100%', overflowWrap: 'break-word' }}>
+                    <div className="chat-message user-message" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxWidth: '100%', overflowWrap: 'break-word', marginBottom: 16 }}>
                       <div className="message-avatar user-avatar-msg">
                         <i className="fas fa-user"></i>
                       </div>
@@ -129,7 +176,7 @@ const ChatPage: React.FC = () => {
                     </div>
                   )}
                   {item.ai && (
-                    <div className="chat-message ai-message" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxWidth: '100%', overflowWrap: 'break-word' }}>
+                    <div className="chat-message ai-message" style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', maxWidth: '100%', overflowWrap: 'break-word', marginBottom: 16 }}>
                       <div className="message-avatar ai-avatar">
                         <i className="fas fa-robot"></i>
                       </div>
@@ -143,54 +190,66 @@ const ChatPage: React.FC = () => {
               ))}
             </div>
           </div>
-          <div style={{ width: "100%", height: 1, background: "#eee", marginBottom: 16 }} />
+          <div style={{ flexGrow: 1 }} />
           <form
             style={{
+              position: "fixed",
+              left: 0,
+              bottom: 0,
+              width: "100vw",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "transparent",
+              padding: "24px 0",
+              zIndex: 10
+            }}
+            onSubmit={handleSubmit}
+          >
+            <div style={{
               width: "100%",
+              maxWidth: 700,
               display: "flex",
               alignItems: "center",
               background: "#f5f5f5",
               borderRadius: 24,
-              boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-              padding: "8px 16px",
-              marginBottom: 8
-            }}
-            onSubmit={handleSubmit}
-          >
-            <input
-              type="text"
-              placeholder="Ask anything"
-              autoComplete="off"
-              required
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              style={{
-                flex: 1,
-                border: "none",
-                outline: "none",
-                background: "transparent",
-                fontSize: 18,
-                padding: "8px 0"
-              }}
-            />
-            <button
-              type="submit"
-              style={{
-                background: "#000",
-                color: "#fff",
-                border: "none",
-                borderRadius: "50%",
-                width: 40,
-                height: 40,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                marginLeft: 8,
-                cursor: "pointer"
-              }}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M3.4 20.6a1 1 0 0 1-.3-1.1l3.2-9.6a1 1 0 0 1 1.3-.6l6.2 2.6a.5.5 0 0 0 .4-.9l-6.2-2.6a1 1 0 0 1-.6-1.3l3.2-9.6a1 1 0 0 1 1.1-.3c.3.1.5.4.6.7l9.6 19.2a1 1 0 0 1-1.3 1.3l-19.2-9.6a1 1 0 0 1-.7-.6z"/></svg>
-            </button>
+              padding: "8px 16px"
+            }}>
+              <input
+                type="text"
+                placeholder="Ask anything"
+                autoComplete="off"
+                required
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                style={{
+                  flex: 1,
+                  border: "none",
+                  outline: "none",
+                  background: "transparent",
+                  fontSize: 16,
+                  padding: "8px 0"
+                }}
+              />
+              <button
+                type="submit"
+                style={{
+                  background: "#000",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: 40,
+                  height: 40,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginLeft: 8,
+                  cursor: "pointer"
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"><path fill="currentColor" d="M3.4 20.6a1 1 0 0 1-.3-1.1l3.2-9.6a1 1 0 0 1 1.3-.6l6.2 2.6a.5.5 0 0 0 .4-.9l-6.2-2.6a1 1 0 0 1-.6-1.3l3.2-9.6a1 1 0 0 1 1.1-.3c.3.1.5.4.6.7l9.6 19.2a1 1 0 0 1-1.3 1.3l-19.2-9.6a1 1 0 0 1-.7-.6z"/></svg>
+              </button>
+            </div>
           </form>
         </div>
       </div>

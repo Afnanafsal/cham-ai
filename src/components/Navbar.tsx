@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
         padding: "0 32px",
         boxSizing: "border-box",
         fontFamily: "inherit",
-        position: "sticky",
+        position: "fixed",
         top: 0,
         zIndex: 100
       }}
